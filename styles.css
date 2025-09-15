@@ -1,0 +1,10 @@
+
+.flag{width:22px;height:16px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.08) inset;flex-shrink:0}
+.card-flag{width:24px;height:18px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.12) inset}
+.team-card{transition:transform .15s ease, box-shadow .15s ease;border-color:#e2e8f0}
+.team-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px -12px rgba(14,165,233,.45)}
+button{transition:transform .08s ease}
+button:active{transform:scale(.98)}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+@media (max-width: 640px){ .mobile-wrap{flex-wrap:wrap} }

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Votación | Intercolegial</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2212%22 fill=%22%230ea5e9%22/><rect x=%2212%22 y=%2234%22 width=%228%22 height=%2218%22 rx=%222%22 fill=%22%23fff%22/><rect x=%2228%22 y=%2226%22 width=%228%22 height=%2226%22 rx=%222%22 fill=%22%23fff%22/><rect x=%2244%22 y=%2218%22 width=%228%22 height=%2234%22 rx=%222%22 fill=%22%23fff%22/></svg>">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="bg-slate-50 text-slate-800">
+  
+<header class="sticky top-0 z-50 backdrop-blur bg-white/80 border-b">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="ranking.html" class="flex items-center gap-2 text-slate-800 font-semibold">
+<span class="inline-flex items-center gap-2 font-semibold">
+  <svg class="w-6 h-6" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="64" height="64" rx="12" fill="#0ea5e9"/>
+    <rect x="12" y="34" width="8" height="18" rx="2" fill="white"/>
+    <rect x="28" y="26" width="8" height="26" rx="2" fill="white"/>
+    <rect x="44" y="18" width="8" height="34" rx="2" fill="white"/>
+  </svg>
+  <span>Ranking Intercolegial</span>
+</span>
+</a>
+    <nav class="flex items-center gap-3">
+      <div class="flex items-center gap-1 rounded-full bg-slate-100 p-1 shadow-inner overflow-x-auto no-scrollbar">
+        <a id="navRanking" href="ranking.html" class="px-3 py-1.5 rounded-full text-sm font-medium text-slate-700 hover:bg-white/70">Ranking</a>
+        <a id="navVotacion" href="votacion.html" class="px-3 py-1.5 rounded-full text-sm font-medium text-slate-700 hover:bg-white/70">Votación</a>
+      </div>
+      <button id="openConfig" class="p-2 rounded-full border hover:bg-slate-50 edit-required" title="Configurar equipos">
+        <img src="assets/icons/gear.png" alt="Configurar" class="w-5 h-5"/>
+      </button>
+      <button id="editBtn" class="px-3 py-1.5 rounded-full border text-sm hover:bg-slate-50" title="Ingresar PIN">🔒 Desbloquear</button>
+    </nav>
+  </div>
+</header>
+
+  <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl sm:text-3xl font-bold">Votación</h1>
+      <div class="text-sm text-slate-600">Tocá un equipo para sumar +1 punto</div>
+    </div>
+    <section id="voteGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"></section>
+    <footer class="mt-8 text-xs text-slate-500">Hecho con ❤️ — GitHub Pages + Firebase. — <b>Creado por Jose Agusto Dos Santos</b></footer>
+  </main>
+
+  <button id="mobileUnlock" class="fixed bottom-4 right-4 px-4 py-3 rounded-full shadow-lg bg-sky-600 text-white text-sm md:hidden hidden">🔒 Desbloquear</button>
+
+  
+<!-- Modal de Configuración -->
+<div id="configModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl">
+    <div class="flex items-center justify-between px-5 py-3 border-b">
+      <h3 class="font-semibold">Editar equipos</h3>
+      <button id="closeConfig" class="p-2 rounded-lg hover:bg-slate-100" title="Cerrar">✕</button>
+    </div>
+    <div class="p-5">
+      <div id="configList" class="space-y-4 max-h-[60vh] overflow-y-auto"></div>
+    </div>
+    <div class="px-5 py-3 border-t flex justify-end gap-2">
+      <button id="configCancel" class="px-3 py-2 rounded-xl border">Cancelar</button>
+      <button id="configSave" class="px-3 py-2 rounded-xl bg-sky-600 text-white">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- PIN Modal -->
+  <div id="pinModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl">
+      <div class="flex items-center justify-between px-5 py-3 border-b">
+        <h3 class="font-semibold">Ingresar PIN</h3>
+        <button id="pinClose" class="p-2 rounded-lg hover:bg-slate-100" title="Cerrar">✕</button>
+      </div>
+      <div class="p-5">
+        <label class="text-sm">PIN (4 dígitos) — predeterminado: 1999
+          <input id="pinInput" type="password" maxlength="4" inputmode="numeric" pattern="\d4" class="mt-2 w-full px-3 py-2 border rounded-xl" placeholder="••••">
+        </label>
+        <p id="pinMsg" class="text-xs text-rose-600 mt-2 hidden">PIN incorrecto</p>
+      </div>
+      <div class="px-5 py-3 border-t flex justify-end gap-2">
+        <button id="pinCancel" class="px-3 py-2 rounded-xl border">Cancelar</button>
+        <button id="pinConfirm" class="px-3 py-2 rounded-xl bg-sky-600 text-white">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./config.js?v=3"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+  <script src="./app.js"></script>
+  <script>document.getElementById('navVotacion')?.classList.add('bg-slate-900','text-white','shadow');</script>
+</body>
+</html>
